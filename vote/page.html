@@ -19,7 +19,8 @@
             const buttonContainer = document.getElementById('buttonContainer');
             const statisticContainer = document.getElementById('statisticContainer');
 
-            fetchReq({ url: '/variants', method: 'GET', callback: createButtons })
+            fetchReq({ url: '/variants', method: 'GET', callback: createButtons });
+            fetchReq({ url: '/stat', method: 'POST', callback: drawStatistics });
 
             function createButtons(data) {
                 for (let i = 0; i < data.length; i++) {
@@ -27,8 +28,8 @@
 
                     button.innerText = data[i].name;
                     button.onclick = function() {
-                        fetchReq({ url: '/vote', method: 'POST', body: JSON.stringify({ variantId: data[i].id }) })
-                        fetchReq({ url: '/stat', method: 'POST', callback: drawStatistics })
+                        fetchReq({ url: '/vote', method: 'POST', body: JSON.stringify({ variantId: data[i].id }) });
+                        fetchReq({ url: '/stat', method: 'POST', callback: drawStatistics });
                     };
                     
                     buttonContainer.appendChild(button);
@@ -50,7 +51,7 @@
                 fetch(`http://localhost:3050${url}`, {
                     method,
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
                     },
                     body,
                 })

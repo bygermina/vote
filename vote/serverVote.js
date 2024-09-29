@@ -15,7 +15,7 @@ const variants = [
 ];
 
 const statistics = variants.reduce((acc, variant) => {
-    acc[variant.name] = 0;
+    acc[variant.id] = 0;
 
     return acc;
 }, {});
@@ -34,10 +34,9 @@ webserver.get('/variants', (req, res) => {
 
 webserver.post('/vote', (req, res) => {
     const variantId = req.body.variantId;
-    const name = variants.find((variant) => variant.id === variantId)?.name;
 
-    if (name) {
-        statistics[name] += 1;
+    if (variantId) {
+        statistics[variantId] += 1;
         res.send({ success: true });
     }
 });
