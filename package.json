@@ -1,0 +1,12 @@
+{
+  "name": "vote",
+  "version": "0.0.1",
+  "description": "vote",
+  "main": "index.js",
+  "keywords": [],
+  "author": "Kseniya Liubachka",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.0"
+  }
+}
