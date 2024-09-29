@@ -5,7 +5,7 @@ const webserver = express();
 
 webserver.use(express.json()); 
 
-const PORT = 3050;
+const PORT = 7780;
 
 const variants = [
     { id: 1, name: "Red" },
