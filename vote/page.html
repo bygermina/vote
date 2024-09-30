@@ -48,17 +48,18 @@
             };
 
             async function fetchReq ({ url, method, callback, body }) {
-                fetch(`${window.origin}/${url}`, {
+                const response = await fetch(`${window.origin}/${url}`, {
                     method,
                     headers: {
                         'Content-Type': 'application/json',
                     },
                     body,
-                })
-                .then(response => response.json())
-                .then(data => {
-                    callback?.(data);
                 });
+
+                if (callback) {
+                    const data = await response.json();
+                    callback?.(data);
+                }
             }
         </script>
     </body>
