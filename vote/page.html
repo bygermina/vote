@@ -27,9 +27,9 @@
                     let button = document.createElement('button');
 
                     button.innerText = data[i].name;
-                    button.onclick = function() {
-                        fetchReq({ url: 'vote', method: 'POST', body: JSON.stringify({ variantId: data[i].id }) });
-                        fetchReq({ url: 'stat', method: 'POST', callback: drawStatistics });
+                    button.onclick = async function() {
+                        await fetchReq({ url: 'vote', method: 'POST', body: JSON.stringify({ variantId: data[i].id }) });
+                        await fetchReq({ url: 'stat', method: 'POST', callback: drawStatistics });
                     };
                     
                     buttonContainer.appendChild(button);
@@ -47,7 +47,7 @@
                 }
             };
 
-            function fetchReq ({ url, method, callback, body }) {
+            async function fetchReq ({ url, method, callback, body }) {
                 fetch(`${window.origin}/${url}`, {
                     method,
                     headers: {
