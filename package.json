@@ -8,7 +8,7 @@
   "license": "ISC",
   "scripts": {
     "start:dev": "cross-env NODE_ENV=development node .\\vote\\serverVote.js",
-    "start:prod": "cross-env NODE_ENV=production node .\\vote\\serverVote.js &"
+    "start:prod": "cross-env NODE_ENV=production node ./vote/serverVote.js &"
   },
   "dependencies": {
     "cross-env": "^7.0.3",
