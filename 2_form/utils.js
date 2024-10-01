@@ -1,6 +1,6 @@
 const ERROR = {
     REQUIRED: "Обязательное поле",
-    LONG_LENGTH: "Обязательное поле",
+    LONG_LENGTH: "Имя слишком длинное",
     SHORT_LENGTH: "Имя слишком короткое",
     OUT_OF_RANGE: "Возраст вне диапазона",
 };
@@ -12,6 +12,8 @@ const validate = (name, age) => {
         errors.name = ERROR.REQUIRED;
     } else if (name.length < 2) {
         errors.name = ERROR.SHORT_LENGTH;
+    } else if (name.length > 30) {
+        errors.name = ERROR.LONG_LENGTH;
     }
 
     if (!age) {
