@@ -26,9 +26,9 @@ const validate = (name, age) => {
 const form = (link, errors, values) =>
     `<form method=GET action="${link}" target=example>
         имя: <input type=text name=name value=${values && values.name ? values.name : ''}><br/>
-        ${errors?.name ? `<p>${errors?.name}</p>` : ''}
+        ${errors && errors.name ? `<p>${errors?.name}</p>` : ''}
         возраст: <input type=number name=age value=${values && values?.age ? values?.age : ''}><br/>
-        ${errors?.age ? `<p>${errors?.age}</p>` : ''}
+        ${errors && errors.age ? `<p>${errors?.age}</p>` : ''}
         <input type=submit value="Ok">
     </form>`;
 
