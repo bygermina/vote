@@ -22,11 +22,11 @@ webserver.get('/form', (req, res) => {
 webserver.get('/send', (req, res) => {
     const values = req.query
 
-    const errors = validate(values?.name, values?.age);
+    const errors = validate(values.name, values.age);
 
     if (!!Object.keys(errors).length) {
         res.send(form(`${ORIGIN}/send`, errors, values));
-    } else {
+    } else if (Object.keys(values).length === 2){
         res.send("name=" + values.name + " age=" + values.age);
     }
 });
