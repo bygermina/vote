@@ -1,24 +1,16 @@
 const express = require('express');
 const path = require('path');
 
+const { variants } = require('./constants');
+const { StatisticsFile } = require('./utils');
+
 const webserver = express();
 
-webserver.use(express.json()); 
+webserver.use(express.json());
+
+const statisticsInstance = new StatisticsFile();
 
 const PORT = process.env.NODE_ENV === "development" ? 3050 : 7780;
-
-const variants = [
-    { id: 1, name: "Red" },
-    { id: 2, name: "Blue" },
-    { id: 3, name: "Green" },
-    { id: 4, name: "Yellow" },
-];
-
-const statistics = variants.reduce((acc, variant) => {
-    acc[variant.id] = 0;
-
-    return acc;
-}, {});
 
 webserver.listen(PORT, () => { 
     console.log("web server running on port " + PORT);
@@ -36,11 +28,16 @@ webserver.post('/vote', (req, res) => {
     const variantId = req.body.variantId;
 
     if (variantId) {
+        const statistics = statisticsInstance.read();
         statistics[variantId] += 1;
+
+        statisticsInstance.write(statistics);
         res.send({ success: true });
     }
 });
 
 webserver.post('/stat', (req, res) => {
+    const statistics = statisticsInstance.read();
+
     res.send(statistics);
 });
