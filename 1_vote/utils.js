@@ -28,7 +28,10 @@ class StatisticsFile extends File {
         const pathStatistics = path.join(__dirname, '_statistics.log');
 
         super(pathStatistics);
-        this.write(statistics);
+
+        if (!fs.existsSync(pathStatistics)) {
+            this.write(statistics);
+        }
     }
 }
 
