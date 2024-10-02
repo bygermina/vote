@@ -25,8 +25,8 @@ const validate = (name, age) => {
     return errors;
 };
 
-const form = (link, errors, values) =>
-    `<form method=GET action="${link}" target=example>
+const form = (errors, values) =>
+    `<form method=GET action="/send">
         имя: <input type=text name=name value=${values && values.name ? values.name : ''}><br/>
         ${errors && errors.name ? `<p>${errors.name}</p>` : ''}
         возраст: <input type=number name=age value=${values && values.age ? values.age : ''}><br/>
