@@ -10,7 +10,7 @@ webserver.use(express.json());
 
 const statisticsInstance = new StatisticsFile();
 
-const PORT = process.env.NODE_ENV === "development" ? 3050 : 7780;
+const PORT = process.env.NODE_ENV === "development" ? 3050 : 22;
 
 webserver.listen(PORT, () => { 
     console.log("web server running on port " + PORT);
