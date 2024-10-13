@@ -1,12 +1,14 @@
 const express = require('express');
 const path = require('path');
 
-const { variants } = require('./constants');
-const { StatisticsFile } = require('./utils');
+const { variants, header } = require('./constants');
+const { StatisticsFile } = require('./utils/file');
+const { getDataBaseOnHeader, getContentHeader } = require('./utils/responseUtils');
 
 const webserver = express();
 
 webserver.use(express.json());
+webserver.use(express.static(path.join(__dirname, 'public')));
 
 const statisticsInstance = new StatisticsFile();
 
@@ -17,7 +19,7 @@ webserver.listen(PORT, () => {
 }); 
 
 webserver.get('/page', (req, res) => {
-    res.sendFile(path.resolve(__dirname, "page.html"));
+    res.sendFile(path.resolve(__dirname, "public", "page.html"));
 });
 
 webserver.get('/variants', (req, res) => {
@@ -37,7 +39,12 @@ webserver.post('/vote', (req, res) => {
 });
 
 webserver.post('/stat', (req, res) => {
+    const clientAccept = req.headers.accept;
     const statistics = statisticsInstance.read();
+   
+    const contentHeader = getContentHeader(clientAccept);
+    res.setHeader(header.CONTENT_TYPE, contentHeader);
 
-    res.send(statistics);
+    const result = getDataBaseOnHeader(clientAccept, statistics);
+    res.send(result);
 });

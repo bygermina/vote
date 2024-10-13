@@ -5,4 +5,16 @@ const variants = [
     { id: 4, name: "Yellow" },
 ];
 
-module.exports = { variants };
+const contentType = {
+    JSON: "application/json",
+    XML: "application/xml",
+    TEXT: "text/plain",
+    HTML: "text/html",
+};
+
+const header = {
+    CONTENT_TYPE: "Content-Type",
+    ACCEPT: "Accept",
+};
+
+module.exports = { variants, contentType, header };

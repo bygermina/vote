@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const { variants } = require('./constants');
+const { variants } = require('../constants');
 
 const statistics = variants.reduce((acc, variant) => {
     acc[variant.id] = 0;
@@ -25,7 +25,7 @@ class File {
 
 class StatisticsFile extends File {
     constructor() {
-        const pathStatistics = path.join(__dirname, '_statistics.log');
+        const pathStatistics = path.join(__dirname, '../_statistics.log');
 
         super(pathStatistics);
 
