@@ -11,7 +11,9 @@ const objToXml = (obj, rootTag = "root") => {
             else {
                 for (let key in obj) {
                     if (obj.hasOwnProperty(key)) {
-                        xml += `<${key}>${buildXml(obj[key], key)}</${key}>`;
+                        const validKey = /^[0-9]/.test(key) ? `_${key}` : key;
+
+                        xml += `<${validKey}>${buildXml(obj[key], validKey)}</${validKey}>`;
                     }
                 }
             }
@@ -46,10 +48,4 @@ const objToHtml = (obj) => {
     return htmlString;
 }
 
-const objToString = (obj) => {
-    return Object.entries(obj)
-        .map(([key, value]) => `${key}=${value}`)
-        .join(' ');
-};
-
-module.exports = { objToXml, objToHtml, objToString };
+module.exports = { objToXml, objToHtml };

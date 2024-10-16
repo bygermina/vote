@@ -1,18 +1,16 @@
 const { contentType } = require('../constants');
-const { objToXml, objToHtml, objToString } = require('./convertData');
+const { objToXml, objToHtml } = require('./convertData');
 
 const getDataBaseOnHeader = (clientAccept, object) => {
-    if (clientAccept === contentType.JSON) {
-        return object;
-    }
-    else if (clientAccept === contentType.XML) {
-        return objToXml(object);
-    }
-    else if (clientAccept === contentType.HTML) {
-        return objToHtml(object);
-    }
-    else {
-        return objToString(object);
+    switch (clientAccept) {
+        case contentType.JSON:
+            return object;
+        case contentType.XML:
+            return objToXml(object);
+        case contentType.HTML:
+            return objToHtml(object);
+        default:
+            return object;
     }
 };
 
@@ -23,4 +21,17 @@ const getContentHeader = (clientAccept) => {
     return contentHeader;
 };
 
-module.exports = { getContentHeader, getDataBaseOnHeader };
+const convertResponse = async (type, response) => {
+    switch(type) {
+        case contentType.JSON:
+            return await response.json();
+        case contentType.HTML:
+            return response.text();
+        case contentType.XML:
+            return response.text();
+        default:
+            return response;
+    }
+};
+
+module.exports = { getContentHeader, getDataBaseOnHeader, convertResponse };
