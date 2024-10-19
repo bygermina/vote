@@ -7,37 +7,37 @@ const contentType = {
     HTML: "text/html",
 };
 
-const convertResponse = async (type, response) => {
-    switch(type) {
-        case contentType.JSON:
-            return await response.json();
-        case contentType.HTML:
-            return response.text();
-        case contentType.XML:
-            return response.text();
-        default:
-            return response;
-    }
-};
-
-let dataType = contentType.JSON;
-
 const buttonContainer = document.getElementById('buttonContainer');
 const statisticContainer = document.getElementById('statisticContainer');
 
-const jsonButton = document.getElementById('Json');
-const htmlButton = document.getElementById('HTML');
-const xmlButton = document.getElementById('XML');
+let dataType = contentType.JSON;
+
+async function getAndDrawStatistics() {
+    return await fetchReq({
+        url: 'stat',
+        method: 'POST',
+        headers: {
+            'Content-Type': dataType,
+            'Accept': dataType,
+        },
+        callback: drawStatistics,
+    });
+};
 
 fetchReq({ url: 'variants', method: 'GET', callback: createButtons });
-fetchReq({ url: 'stat', method: 'POST', headers: {
-    'Content-Type': dataType,
-    'Accept': dataType,
-}, callback: drawStatistics });
+void getAndDrawStatistics();
 
-jsonButton.addEventListener('click', () => changeDataType(contentType.JSON));
-htmlButton.addEventListener('click', () => changeDataType(contentType.HTML));
-xmlButton.addEventListener('click', () => changeDataType(contentType.XML));
+async function onDataTypeButtonClick(contentType) {
+    changeDataType(contentType);
+    let data = await getAndDrawStatistics();
+
+    if (contentType === "application/json") {
+        console.log(data);
+        data = JSON.stringify(data, null, 2);
+    }
+
+    download(data, contentType, `statistics.${contentType.split('/')[1]}`);
+};
 
 function createButtons(data) {
     for (let i = 0; i < data.length; i++) {
@@ -46,30 +46,16 @@ function createButtons(data) {
         button.innerText = data[i].name;
         button.onclick = async function() {
             await fetchReq({ url: 'vote', method: 'POST', body: JSON.stringify({ variantId: data[i].id }) });
-            await fetchReq({
-                url: 'stat',
-                method: 'POST',
-                headers: {
-                    'Content-Type': dataType,
-                    'Accept': dataType,
-                },
-                callback: drawStatistics });
+            await getAndDrawStatistics();
         };
         
         buttonContainer.appendChild(button);
     }
-}
+};
 
 function changeDataType(type) {
     dataType = type;
 };
-
-function parseXml(xmlData) {
-    const parser = new DOMParser();
-    const xmlDoc = parser.parseFromString(xmlData, "text/xml");
-
-    return xmlDoc;
-}
 
 function drawStatistics(data) {
     statisticContainer.innerHTML = '';
@@ -90,7 +76,7 @@ function drawStatistics(data) {
     }; 
 };
 
-async function fetchReq ({
+async function fetchReq({
     url,
     method,
     headers = {
@@ -100,6 +86,19 @@ async function fetchReq ({
     callback,
     body,
 }) {
+    const convertResponse = async (type, response) => {
+        switch(type) {
+            case contentType.JSON:
+                return await response.json();
+            case contentType.HTML:
+                return response.text();
+            case contentType.XML:
+                return response.text();
+            default:
+                return response;
+        }
+    };
+    
     try {
         const response = await fetch(`${window.origin}/${url}`, {
             method,
@@ -111,9 +110,22 @@ async function fetchReq ({
             const data = await convertResponse(headers["Content-Type"], response);
 
             callback?.(data);
+
+            return data;
         }
-    
     } catch (e) {
         console.log(e);
     }
-}
+};
+
+function download(content, type, filename) {
+    const blob = new Blob([content], { type });
+
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = filename;
+
+    link.click();
+
+    URL.revokeObjectURL(link.href);
+};
