@@ -32,7 +32,6 @@ async function onDataTypeButtonClick(contentType) {
     let data = await getAndDrawStatistics();
 
     if (contentType === "application/json") {
-        console.log(data);
         data = JSON.stringify(data, null, 2);
     }
 
