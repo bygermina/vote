@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            button, input {
+                margin: 10px 10px 10px 0;
+                font-size: 16px;
+            }
+
+            .container {
+                display: flex;
+                flex-direction: column;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div>
+                <div class="input-container">
+                    <label for="method" class="input-label">Метод</label>
+                    <input type="text" id="method" class="input-field">
+                </div>
+                <div class="input-container">
+                    <label for="url" class="input-label">URL</label>
+                    <input type="text" id="url" class="input-field">
+                </div>
+            </div>
+
+            <div>Параметры</div>
+            <div id="parametersContainer"></div>
+            <button onclick="onAddParameterClick()">Добавить параметр</button>
+
+            <div>Заголовки</div>
+            <div id="headersContainer"></div>
+            <button onclick="onAddHeaderClick()">Добавить заголовок</button>
+
+            <div>
+                <button onclick="onSaveClick()">Сохранить запрос</button>
+                <button onclick="onSendClick()">Отправить запрос</button>
+                <button onclick="onRemoveClick()">Очистить форму</button>
+            </div>
+        </div>
+        <script type="text/javascript" src="client.js"></script>
+    </body>
+</html>
