@@ -18,7 +18,7 @@ function onAddParameterClick() {
     parameter.innerHTML = `
         <input type="text" placeholder="ключ">
         <input type="text" placeholder="значение">
-        <button onclick="onRemoveParameterClick(this)">Remove</button>
+        <button onclick="onRemoveParameterClick(this)">Удалить</button>
     `;
 
     parametersContainer.appendChild(parameter);
@@ -33,7 +33,7 @@ function onAddHeaderClick() {
     header.innerHTML = `
         <input type="text" placeholder="ключ">
         <input type="text" placeholder="значение">
-        <button onclick="onRemoveHeaderClick(this)">Remove</button>
+        <button onclick="onRemoveHeaderClick(this)">Удалить</button>
     `;
 
     headersContainer.appendChild(header);
