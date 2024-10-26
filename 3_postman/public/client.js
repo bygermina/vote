@@ -68,10 +68,6 @@ async function onSaveClick() {
     await fetchReq({
         url: 'saveRequest',
         method: 'POST',
-        headers: {
-            'Content-Type': contentType.JSON,
-            'Accept': contentType.JSON,
-        },  
         body: JSON.stringify(data),
     });
 }
@@ -82,10 +78,6 @@ function onSendClick() {
     fetchReq({
         url: 'sendRequest',
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-        },
         body: JSON.stringify(data),
     });
 }
