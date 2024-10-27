@@ -9,6 +9,7 @@ const contentType = {
 
 const parametersContainer = document.getElementById('parametersContainer');
 const headersContainer = document.getElementById('headersContainer');
+const bodyContainer = document.getElementById('bodyContainer');
 
 const methodInput = document.getElementById('method');
 const urlInput = document.getElementById('url');
@@ -88,6 +89,12 @@ function onRemoveClick() {
 
     methodInput.value = '';
     urlInput.value = '';
+}
+
+function onBlurMethod() {
+    const isShown = methodInput.value.toLowerCase() === 'post' ? 'block' : 'none';
+
+    bodyContainer.style.display = isShown;
 }
 
 async function fetchReq({

@@ -18,13 +18,17 @@
     <body>
         <div class="container">
             <div>
-                <div class="input-container">
-                    <label for="method" class="input-label">Метод</label>
-                    <input type="text" id="method" class="input-field">
+                <div>
+                    <label for="method">Метод</label>
+                    <input type="text" id="method" onblur="onBlurMethod()">
                 </div>
-                <div class="input-container">
-                    <label for="url" class="input-label">URL</label>
-                    <input type="text" id="url" class="input-field">
+                <div id="bodyContainer" style="display: none;">
+                    <label for="body">Тело</label>
+                    <input type="text" id="body">
+                </div>
+                <div>
+                    <label for="url">URL</label>
+                    <input type="text" id="url">
                 </div>
             </div>
 
