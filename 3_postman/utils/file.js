@@ -2,8 +2,14 @@ const fs = require('fs');
 const path = require('path');
 
 class File {
-    constructor(path) {
-        this.path = path;
+    constructor(relPath) {
+        const fullPath = path.join(__dirname, ...relPath);
+
+        if (!fs.existsSync(fullPath)) {
+            fs.writeFileSync(fullPath, JSON.stringify([]));
+        }
+
+        this.path = fullPath;
     }
 
     read() {
@@ -15,16 +21,4 @@ class File {
     }
 }
 
-class RequestsFile extends File {
-    constructor() {
-        const pathRequests = path.join(__dirname, '../_requests.log');
-
-        super(pathRequests);
-
-        if (!fs.existsSync(pathRequests)) {
-            this.write([]);
-        }
-    }
-}
-
-module.exports = { RequestsFile };
+module.exports = { File };
