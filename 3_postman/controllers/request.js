@@ -7,16 +7,16 @@ class RequestController {
     }
 
     getRequests = (_, res) => {
-        const requests = requestsInstance.read();
+        const requests = this.requestsInstance.read();
     
         res.send(requests);
     }
 
     saveRequest = (req, res) =>  {
-        const requests = requestsInstance.read();
+        const requests = this.requestsInstance.read();
         requests.push(req.body);
     
-        requestsInstance.write(requests);
+        this.requestsInstance.write(requests);
         res.send({ success: true });
     }
 
