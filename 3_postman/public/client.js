@@ -31,7 +31,6 @@ function createRequestButtons(data) {
         urlInput.value = data.url;
 
         if (data.body) {
-            console.log(data.body);
             bodyInput.value = data.body;
         }
     
@@ -137,7 +136,7 @@ function onRemoveHeaderClick(button) {
 function getData() {
     const method = methodInput.value;
     const url = urlInput.value;
-    const body = bodyInput.value;
+    const body = bodyContainer.style.display !== 'none' ? bodyInput.value : undefined;
 
     const parameters = Array.from(parametersContainer.children).reduce((prevValue, parameter) => {
         const [key, value] = parameter.children;
@@ -164,6 +163,7 @@ async function onSaveClick() {
     });
 
     fetchReq({ url: 'getRequests', method: 'GET', callback: createRequestButtons });
+    onRemoveClick();
 }
 
 function onSendClick() {
@@ -188,7 +188,8 @@ function onRemoveClick() {
 }
 
 function showBodyInput() {
-    const isShown = methodInput.value.toLowerCase() === 'post' ? 'block' : 'none';
+    const methods = ['post', 'put', 'patch'];
+    const isShown = methods.includes(methodInput.value.toLowerCase()) ? 'block' : 'none';
 
     bodyContainer.style.display = isShown;
 }
