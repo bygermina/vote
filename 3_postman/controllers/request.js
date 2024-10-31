@@ -21,19 +21,24 @@ class RequestController {
     }
 
     sendRequest = async (req, res) => {
-        const { method, url, parameters, headers } = req.body;
+        const { method, url, parameters, headers, body } = req.body;
         const fullUrl = getUrl(url, parameters);
-    
-        const response = await fetch(fullUrl, {
-            method,
-            headers
-        });
 
-        res.send({
-            status: response.status,
-            body: response.body,
-            headers: response.headers,
-        });
+        try {
+            const response = await fetch(fullUrl, {
+                method,
+                headers,
+                body,
+            });
+
+            res.send({
+                status: response.status,
+                body: response.body,
+                headers: response.headers,
+            });
+        } catch (error) {   
+            res.send({ error });
+        }
     }
 }
 
