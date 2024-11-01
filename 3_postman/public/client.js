@@ -96,7 +96,7 @@ async function createResponse(data) {
     
         responseContainer.appendChild(headers);
     
-        const bodyParced = await convertResponse(data.headers.contentType, data.body);
+        const bodyParced = await convertResponse(data.headers?.contentType, data.body);
 
         const body = document.createElement('div');
         body.style.wordBreak = 'break-all';
