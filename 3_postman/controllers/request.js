@@ -1,3 +1,5 @@
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+
 const { getUrl } = require('../utils/string');
 const { File } = require('../utils/file');
 
@@ -33,11 +35,11 @@ class RequestController {
 
             res.send({
                 status: response.status,
+                headers: response.headers.raw(),
                 body: response.body,
-                headers: response.headers,
             });
         } catch (error) {   
-            res.send({ error });
+            res.send({ status: 500, error });
         }
     }
 }

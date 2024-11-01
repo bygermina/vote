@@ -78,26 +78,29 @@ function createRequestButtons(data) {
     }
 };
 
-function createResponse(data) {
+async function createResponse(data) {
     responseContainer.innerHTML = '';
 
     if (typeof data.status === 'number') {
         const status = document.createElement('div');
-        status.innerHTML = `Статус: ${data.status}`;
+        status.innerHTML = `<span style="background-color: #d2d7f5">Статус:  </span> ${data.status}`;
     
         responseContainer.appendChild(status);
     
         const headers = document.createElement('div');
-        headers.innerHTML = '<div>Заголовки:</div>';
+        headers.innerHTML = '<span style="background-color: #d2d7f5">Заголовки:  </span>';
     
         for (let key in data.headers) {
-            headers.innerHTML += `<div>${key}: ${data.headers[key]}</div>`;
+            headers.innerHTML += `<li>${key}: ${data.headers[key]}</li>`;
         }
     
         responseContainer.appendChild(headers);
     
+        const bodyParced = await convertResponse(data.headers.contentType, data.body);
+
         const body = document.createElement('div');
-        body.innerHTML = `Body: ${JSON.stringify(data.body)}`;
+        body.style.wordBreak = 'break-all';
+        body.innerHTML = `<span style="background-color: #d2d7f5">Body:  </span> ${JSON.stringify(bodyParced)}`;
     
         responseContainer.appendChild(body);
     }
@@ -204,19 +207,6 @@ async function fetchReq({
     callback,
     body,
 }) {
-    const convertResponse = async (type, response) => {
-        switch(type) {
-            case contentType.JSON:
-                return await response.json();
-            case contentType.HTML:
-                return response.text();
-            case contentType.XML:
-                return response.text();
-            default:
-                return response;
-        }
-    };
-    
     try {
         const response = await fetch(`${window.origin}/${url}`, {
             method,
@@ -227,11 +217,24 @@ async function fetchReq({
         if (callback) {
             const data = await convertResponse(headers["Content-Type"], response);
 
-            callback?.(data);
+            await callback?.(data);
 
             return data;
         }
     } catch (e) {
         console.log(e);
+    }
+};
+
+async function convertResponse (type, response) {
+    switch(type) {
+        case contentType.JSON:
+            return await response.json();
+        case contentType.HTML:
+            return response.text();
+        case contentType.XML:
+            return response.text();
+        default:
+            return response;
     }
 };
