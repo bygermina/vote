@@ -1,5 +1,6 @@
 const { getUrl } = require('../utils/string');
 const { File } = require('../utils/file');
+const { getHeadersObject } = require('../utils/responseUtils');
 
 class RequestController {
     constructor() {
@@ -31,8 +32,7 @@ class RequestController {
                 body,
             });
 
-            const headersResponse = {};
-            response.headers.forEach((value, name) => { headersResponse[name] = value; });
+            const headersResponse = getHeadersObject(response.headers);
 
             res.send({
                 status: response.status,
@@ -40,7 +40,7 @@ class RequestController {
                 body: await response.text(),
             });
         } catch (error) {   
-            res.send({ status: 500, error: error });
+            res.send({ status: 500, error: error.toString() });
         }
     }
 }
