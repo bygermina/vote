@@ -1,3 +1,5 @@
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+
 const { getUrl } = require('../utils/string');
 const { File } = require('../utils/file');
 const { getHeadersObject } = require('../utils/responseUtils');
@@ -30,6 +32,7 @@ class RequestController {
                 method,
                 headers,
                 body,
+                redirect: 'manual',
             });
 
             const headersResponse = getHeadersObject(response.headers);
