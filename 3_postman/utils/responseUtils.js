@@ -1,10 +1,10 @@
-const getHeadersObject = (headers) => {
-    const headersObject = {};
-    headers.forEach((value, name) => {
-        headersObject[name] = value;
+const mapToObject = (map) => {
+    const object = {};
+    map.forEach((value, name) => {
+        object[name] = value;
     });
 
-    return headersObject;
+    return object;
 };
 
-module.exports = { getHeadersObject };
+module.exports = { mapToObject };

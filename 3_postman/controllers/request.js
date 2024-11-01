@@ -1,8 +1,8 @@
-const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+const fetch = (...args) => import('../utils/fetchHelper.mjs').then(({default: fetch}) => fetch(...args));
 
 const { getUrl } = require('../utils/string');
 const { File } = require('../utils/file');
-const { getHeadersObject } = require('../utils/responseUtils');
+const { mapToObject } = require('../utils/responseUtils');
 
 class RequestController {
     constructor() {
@@ -35,7 +35,7 @@ class RequestController {
                 redirect: 'manual',
             });
 
-            const headersResponse = getHeadersObject(response.headers);
+            const headersResponse = mapToObject(response.headers);
 
             res.send({
                 status: response.status,
