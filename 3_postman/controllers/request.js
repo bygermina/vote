@@ -1,5 +1,4 @@
-const fetch = (...args) => import('../utils/fetchHelper.mjs').then(({default: fetch}) => fetch(...args));
-
+const fetch = require('../utils/fetchHelper.js');
 const { getUrl } = require('../utils/string');
 const { File } = require('../utils/file');
 const { mapToObject } = require('../utils/responseUtils');
