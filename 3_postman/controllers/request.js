@@ -1,5 +1,3 @@
-const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
-
 const { getUrl } = require('../utils/string');
 const { File } = require('../utils/file');
 
@@ -33,13 +31,16 @@ class RequestController {
                 body,
             });
 
+            const headersResponse = {};
+            response.headers.forEach((value, name) => { headersResponse[name] = value; });
+
             res.send({
                 status: response.status,
-                headers: response.headers.raw(),
-                body: response.body,
+                headers: headersResponse,
+                body: await response.text(),
             });
         } catch (error) {   
-            res.send({ status: 500, error });
+            res.send({ status: 500, error: error });
         }
     }
 }
