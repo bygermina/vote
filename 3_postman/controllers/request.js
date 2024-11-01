@@ -39,8 +39,9 @@ class RequestController {
                 headers: headersResponse,
                 body: await response.text(),
             });
-        } catch (error) {   
-            res.send({ status: 500, error: error.toString() });
+        } catch (error) {
+            console.log(error);
+            res.send({ status: 500, error });
         }
     }
 }
