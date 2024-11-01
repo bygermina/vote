@@ -95,8 +95,10 @@ async function createResponse(data) {
         }
     
         responseContainer.appendChild(headers);
+
+        const contentTypeHeader = data.headers ? data.headers.contentType: undefined;
     
-        const bodyParced = await convertResponse(data.headers?.contentType, data.body);
+        const bodyParced = await convertResponse(contentTypeHeader, data.body);
 
         const body = document.createElement('div');
         body.style.wordBreak = 'break-all';
@@ -183,6 +185,7 @@ function onSendClick() {
 function onRemoveClick() {
     parametersContainer.innerHTML = '';
     headersContainer.innerHTML = '';
+    responseContainer.innerHTML = '';
 
     methodInput.value = '';
     urlInput.value = '';
