@@ -7,9 +7,8 @@
   "author": "Kseniya Liubachka",
   "license": "ISC",
   "scripts": {
-    "start:dev": "cross-env NODE_ENV=development node .\\3_postman\\server.js",
-    "start:prod": "cross-env NODE_ENV=production node ./3_postman/server.js &",
-    "start:prodE": "cross-env NODE_ENV=production node ./3_postman/server.js"
+    "start:dev": "cross-env NODE_ENV=development node .\\4_form\\server.js",
+    "start:prod": "cross-env NODE_ENV=production node ./4_form/server.js &"
   },
   "dependencies": {
     "cross-env": "^7.0.3",
