@@ -1,4 +1,4 @@
-const fetch = require('../utils/fetchHelper.js');
+const fetch = require('node-fetch');
 const { getUrl } = require('../utils/string');
 const { File } = require('../utils/file');
 const { mapToObject } = require('../utils/responseUtils');
