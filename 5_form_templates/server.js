@@ -22,7 +22,7 @@ webserver.get('/send', (req, res) => {
 
     if (!!Object.keys(errors).length) {
         res.send(formView({ errors, values }));
-    } else if (Object.keys(values).length === 2){
+    } else {
         res.send("name=" + values.name + " age=" + values.age);
     }
 });
