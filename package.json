@@ -7,12 +7,13 @@
   "author": "Kseniya Liubachka",
   "license": "ISC",
   "scripts": {
-    "start:dev": "cross-env NODE_ENV=development node .\\4_form\\server.js",
-    "start:prod": "cross-env NODE_ENV=production node ./4_form/server.js &"
+    "start:dev": "cross-env NODE_ENV=development node .\\5_form_templates\\server.js",
+    "start:prod": "cross-env NODE_ENV=production node ./5_form_templates/server.js &"
   },
   "dependencies": {
     "cross-env": "^7.0.3",
     "express": "^4.21.0",
+    "handlebars": "^4.7.8",
     "node-fetch": "^2.7.0"
   }
 }

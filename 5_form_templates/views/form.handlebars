@@ -1,0 +1,7 @@
+<form method="GET" action="/send">
+    имя: <input type="text" name="name" value="{{#if values.name}}{{values.name}}{{/if}}"><br/>
+    {{#if errors.name}}<p>{{errors.name}}</p>{{/if}}
+    возраст: <input type="number" name="age" value="{{#if values.age}}{{values.age}}{{/if}}"><br/>
+    {{#if errors.age}}<p>{{errors.age}}</p>{{/if}}
+    <input type="submit" value="Ok">
+</form>
