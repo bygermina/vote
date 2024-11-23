@@ -30,7 +30,7 @@ const validate = (name, age) => {
 };
 
 const getFormView = () => {
-    const formViewString = fs.readFileSync(path.join(__dirname, 'views','form.handlebars'),"utf8"); //можно ли читать фа
+    const formViewString = fs.readFileSync(path.join(__dirname, 'views','form.handlebars'),"utf8");
     const formView = Handlebars.compile(formViewString);
 
     return formView;
