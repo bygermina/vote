@@ -3,9 +3,19 @@ const path = require('path');
 const zlib = require('zlib');
 const { pipeline } = require('stream/promises');
 
-const zipFileRegex = /\.zip$/;
+const removeExtension = (filePath) => {
+    return filePath.replace(/\.[^/.]+$/, '');
+};
 
-const findFileAndCreateZip = async (dir) => {
+const createZipFilePath = (filePath) => {
+    const pathWithoutExtension = removeExtension(filePath);
+
+    const zipFilePath = pathWithoutExtension + '.zip';
+
+    return zipFilePath;
+}
+
+const findAllFilesInFolder = async (dir, fileRegex, actOverFile) => {
     const files = await fs.promises.readdir(dir, { withFileTypes: true });
 
     for (let i = 0; i < files.length; i++) {
@@ -13,33 +23,36 @@ const findFileAndCreateZip = async (dir) => {
         const fullPath = path.join(dir, file.name);
 
         if (file.isDirectory()) {
-            await findFileAndCreateZip(fullPath);
+            await findAllFilesInFolder(fullPath, fileRegex, actOverFile);
         } else {
-            if (zipFileRegex.test(file.name)) {
+            if (fileRegex.test(file.name)) {
                 continue;
             }
 
-            const parsedPath = path.parse(file.name);
-            const zipFilePath = path.join(dir, `${parsedPath.name}.zip`);
-
-            const sourceStats = await fs.promises.stat(fullPath);
-            let zipStats;
-
-            try {
-                zipStats = await fs.promises.stat(zipFilePath);
-            } catch (err) {
-            } finally {
-                if (!zipStats || (sourceStats.mtime > zipStats.mtime)) {
-                    await createZipFile(fullPath, zipFilePath);
-                }
-            }
+            await actOverFile(fullPath);
         }
     }
 };
 
-const createZipFile = async (sourceFile, zipFilePath) => {
+const checkFileExistsAndValid = async (sourceFilePath, comparefilePath) => {
+    const sourceStats = await fs.promises.stat(sourceFilePath);
+    let fileStats;
+
+    try {
+        fileStats = await fs.promises.stat(comparefilePath);
+    } catch (err) {
+    } finally {
+        if (!fileStats || (sourceStats.mtime > fileStats.mtime)) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+const createZipFile = async (sourceFilePath, zipFilePath) => {
     const gzip = zlib.createGzip();
-    const source = fs.createReadStream(sourceFile);
+    const source = fs.createReadStream(sourceFilePath);
     const destination = fs.createWriteStream(zipFilePath);
 
     try {
@@ -50,4 +63,4 @@ const createZipFile = async (sourceFile, zipFilePath) => {
     }
 };
 
-module.exports = { findFileAndCreateZip, createZipFile };
+module.exports = { createZipFile, findAllFilesInFolder, checkFileExistsAndValid, createZipFilePath };

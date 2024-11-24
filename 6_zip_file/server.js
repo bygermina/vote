@@ -1,5 +1,22 @@
 const path = require('path');
 
-const { findFileAndCreateZip } = require('./utils.js');
+const { createZipFile, findAllFilesInFolder, checkFileExistsAndValid, createZipFilePath } = require('./utils.js');
 
-findFileAndCreateZip(path.join(__dirname, 'someFolder'));
+const zipFileRegex = /\.zip$/
+
+const findFileAndCreateZip = async () => {
+    const initialFolder = path.join(__dirname, 'someFolder');
+
+    const actOverFile = async (fullPath) => {
+        const zipFilePath = createZipFilePath(fullPath);
+        const notExistOrUnvalid = await checkFileExistsAndValid(fullPath, zipFilePath);
+
+        if (notExistOrUnvalid) {
+            await createZipFile(fullPath, zipFilePath);
+        }
+    }
+
+    await findAllFilesInFolder(initialFolder, zipFileRegex, actOverFile);
+}
+
+findFileAndCreateZip();
