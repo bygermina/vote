@@ -10,17 +10,16 @@ const removeExtension = (filePath) => {
 const createZipFilePath = (filePath) => {
     const pathWithoutExtension = removeExtension(filePath);
 
-    const zipFilePath = pathWithoutExtension + '.zip';
-
-    return zipFilePath;
+    return pathWithoutExtension + '.zip';
 }
 
 const findAllFilesInFolder = async (dir, fileRegex, actOverFile) => {
     const files = await fs.promises.readdir(dir, { withFileTypes: true });
 
-    for (let i = 0; i < files.length; i++) {
-        const file = files[i];
+    for (const file of files) {
         const fullPath = path.join(dir, file.name);
+
+        console.log('проверяем путь:', fullPath);
 
         if (file.isDirectory()) {
             await findAllFilesInFolder(fullPath, fileRegex, actOverFile);
@@ -51,13 +50,14 @@ const checkFileExistsAndValid = async (sourceFilePath, comparefilePath) => {
 }
 
 const createZipFile = async (sourceFilePath, zipFilePath) => {
-    const gzip = zlib.createGzip();
     const source = fs.createReadStream(sourceFilePath);
+    const gzip = zlib.createGzip();
     const destination = fs.createWriteStream(zipFilePath);
 
+    console.log('архив начал:', zipFilePath);
     try {
         await pipeline(source, gzip, destination);
-        console.log(`Zip file created: ${zipFilePath}`);
+        console.log(`архив создан: ${zipFilePath}`);
     } catch (error) {
         throw error;
     }
