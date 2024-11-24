@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const zlib = require('zlib');
+const { pipeline } = require('stream/promises');
 
 const zipFileRegex = /\.zip$/;
 
@@ -38,18 +39,17 @@ const findFileAndCreateZip = async (dir) => {
 };
 
 const createZipFile = async (sourceFile, zipFilePath) => {
-    return new Promise((resolve, reject) => {
-        const gzip = zlib.createGzip();
-        const source = fs.createReadStream(sourceFile);
-        const destination = fs.createWriteStream(zipFilePath);
+    const gzip = zlib.createGzip();
+    const source = fs.createReadStream(sourceFile);
+    const destination = fs.createWriteStream(zipFilePath);
 
-        source.on('error', reject);
-        gzip.on('error', reject);
-        destination.on('error', reject);
-
-        destination.on('finish', resolve);
-        source.pipe(gzip).pipe(destination);
-    });
+    try {
+        await pipeline(source, gzip, destination);
+        console.log(`Zip file created: ${zipFilePath}`);
+    } catch (error) {
+        console.error(`Error creating zip file: ${error.message}`);
+        throw error;
+    }
 };
 
 module.exports = { findFileAndCreateZip, createZipFile };
