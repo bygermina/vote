@@ -30,7 +30,6 @@ const findFileAndCreateZip = async (dir) => {
             } catch (err) {
             } finally {
                 if (!zipStats || (sourceStats.mtime > zipStats.mtime)) {
-                    console.log(`Creating or updating zip for: ${file.name}`);
                     await createZipFile(fullPath, zipFilePath);
                 }
             }
@@ -47,7 +46,6 @@ const createZipFile = async (sourceFile, zipFilePath) => {
         await pipeline(source, gzip, destination);
         console.log(`Zip file created: ${zipFilePath}`);
     } catch (error) {
-        console.error(`Error creating zip file: ${error.message}`);
         throw error;
     }
 };
